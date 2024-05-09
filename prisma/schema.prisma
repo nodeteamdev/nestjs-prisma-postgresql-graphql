@@ -17,6 +17,7 @@ model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
   password String
+  role Role
   name  String?
   dateCreated DateTime @default(now())
   posts Post[]
@@ -31,4 +32,18 @@ model Post {
   authorId  Int?
   dateCreated DateTime @default(now())
   dateModified DateTime @updatedAt
+}
+
+model TokenWhiteList {
+  id           Int   @default(autoincrement()) @id
+  userId       String
+  refreshToken String?
+  expiredAt    DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  USER
 }

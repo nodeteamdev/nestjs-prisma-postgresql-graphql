@@ -16,6 +16,10 @@
     },
     "baseUrl": ".",
     "paths": {
+      "@user/*": ["src/app/user/*"],
+      "@post/*": ["src/app/post/*"],
+      "@auth/*": ["src/app/auth/*"],
+      "src/*": ["src/*"],
       "*": [
         "node_modules",
         "src/*"

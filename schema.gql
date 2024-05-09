@@ -1,0 +1,129 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @upper on FIELD_DEFINITION
+
+"""user"""
+type User {
+  id: Int!
+  email: String!
+  password: String!
+  role: Role!
+  name: String
+  dateCreated: Timestamp!
+  posts: [Post]!
+}
+
+"""User role"""
+enum Role {
+  ADMIN
+  USER
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+"""post"""
+type Post {
+  id: Int!
+  title: String!
+  content: String!
+  published: Boolean!
+  author: User
+  authorId: Int!
+  dateCreated: Timestamp!
+  dateModified: Timestamp!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+}
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+type Auth {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+type Query {
+  user(id: Int!): User!
+  posts(skip: Int, take: Int! = 10, cursor: Int, order: Order! = asc): [Post!]!
+  post(id: Int!): Post!
+}
+
+"""Pagination order"""
+enum Order {
+  asc
+  desc
+}
+
+type Mutation {
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  createPost(createPostInput: CreatePostInput!): Post!
+  updatePost(updatePostInput: UpdatePostInput!): Post!
+  removePost(id: Int!): Post!
+  signUp(data: SignUpInput!): Auth!
+  signIn(data: SignInInput!): Auth!
+  refreshToken(refreshTokenInput: RefreshTokenInput!): Token!
+}
+
+input CreateUserInput {
+  email: String!
+  password: String!
+  name: String
+  role: Role!
+}
+
+input UpdateUserInput {
+  email: String
+  password: String
+  name: String
+  role: Role
+  id: Int!
+}
+
+input CreatePostInput {
+  title: String!
+  content: String!
+  authorId: Int!
+}
+
+input UpdatePostInput {
+  title: String
+  content: String
+  authorId: Int
+  id: Int!
+  published: Boolean!
+}
+
+input SignUpInput {
+  email: String!
+  password: String!
+  name: String
+}
+
+input SignInInput {
+  email: String!
+  password: String!
+}
+
+input RefreshTokenInput {
+  token: String!
+}

@@ -1,5 +1,17 @@
-import { Field, GraphQLTimestamp, Int, ObjectType } from '@nestjs/graphql';
-import { Post } from 'src/post/models/post.model';
+import {
+  Field,
+  GraphQLTimestamp,
+  Int,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { Post } from '@post/models/post.model';
+import { Role } from '@prisma/client';
+
+registerEnumType(Role, {
+  name: 'Role',
+  description: 'User role',
+});
 
 @ObjectType({ description: 'user' })
 export class User {
@@ -11,6 +23,9 @@ export class User {
 
   @Field()
   password: string;
+
+  @Field(() => Role)
+  role: Role;
 
   @Field({ nullable: true })
   name?: string;

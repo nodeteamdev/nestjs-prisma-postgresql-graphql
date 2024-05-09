@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../../prisma.service';
 import { Post } from './models/post.model';
+import { PaginationArgs } from '../../dto/pagination.args';
 
 @Injectable()
 export class PostService {
@@ -15,20 +16,20 @@ export class PostService {
     });
   }
 
-  async many(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.PostWhereUniqueInput;
-    where?: Prisma.PostWhereInput;
-    orderBy?: Prisma.PostOrderByWithRelationInput;
-  }): Promise<Post[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+  async many(pagination: PaginationArgs): Promise<Post[]> {
+    const cursor = pagination.cursor
+      ? {
+          id: pagination.cursor,
+        }
+      : undefined;
+
     return this.prisma.post.findMany({
-      skip,
-      take,
+      skip: pagination.skip,
+      take: pagination.take,
       cursor,
-      where,
-      orderBy,
+      orderBy: {
+        id: pagination.order,
+      },
     });
   }
 
