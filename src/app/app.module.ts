@@ -1,10 +1,7 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { PostModule } from './post/post.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { PrismaService } from 'src/prisma.service';
 import { CacheModule } from '@nestjs/cache-manager';
 import { appConstants } from './app.constants';
 import { ConfigModule } from '@nestjs/config';
@@ -42,7 +39,5 @@ import { upperDirectiveTransformer } from 'src/directives/upper-case.directive';
       },
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService, PrismaService],
 })
 export class AppModule {}
