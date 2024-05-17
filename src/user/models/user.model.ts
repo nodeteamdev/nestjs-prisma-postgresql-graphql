@@ -1,11 +1,12 @@
 import {
   Field,
   GraphQLTimestamp,
+  HideField,
   Int,
   ObjectType,
   registerEnumType,
 } from '@nestjs/graphql';
-import { Post } from '@post/models/post.model';
+import { Post } from 'src/post/models/post.model';
 import { Role } from '@prisma/client';
 
 registerEnumType(Role, {
@@ -21,7 +22,7 @@ export class User {
   @Field()
   email: string;
 
-  @Field()
+  @HideField()
   password: string;
 
   @Field(() => Role)
@@ -33,6 +34,6 @@ export class User {
   @Field(() => GraphQLTimestamp)
   dateCreated: Date;
 
-  @Field(() => [Post], { nullable: 'items' })
+  @Field(() => [Post], { nullable: true })
   posts: Post[];
 }

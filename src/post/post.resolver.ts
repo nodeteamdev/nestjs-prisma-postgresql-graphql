@@ -4,8 +4,8 @@ import { Post } from './models/post.model';
 import { CreatePostInput } from './dto/create-post.input';
 import { UpdatePostInput } from './dto/update-post.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '@auth/guards/gql-auth.guard';
-import { PaginationArgs } from '../../dto/pagination.args';
+import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+import { PaginationArgs } from '../common/dto/pagination.args';
 
 @Resolver(() => Post)
 export class PostResolver {

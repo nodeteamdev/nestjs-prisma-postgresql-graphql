@@ -7,7 +7,7 @@ import {
 } from '@nestjs/graphql';
 import { Auth } from './models/auth.model';
 import { Token } from './models/token.model';
-import { User } from '@user/models/user.model';
+import { User } from 'src/user/models/user.model';
 import { AuthService } from './auth.service';
 import SignUpInput from './dto/sign-up.input';
 import SignInInput from './dto/sign-in.input';
@@ -18,9 +18,13 @@ export class AuthResolver {
   constructor(private readonly auth: AuthService) {}
 
   @Mutation(() => Auth)
-  async signUp(@Args('data') data: SignUpInput) {
-    data.email = data.email.toLowerCase();
-    const { accessToken, refreshToken } = await this.auth.signUp(data);
+  async signUp(@Args('signUpInput') { email, password, name }: SignUpInput) {
+    const { accessToken, refreshToken } = await this.auth.signUp({
+      email: email.toLowerCase(),
+      password,
+      name,
+    });
+
     return {
       accessToken,
       refreshToken,
@@ -28,7 +32,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => Auth)
-  async signIn(@Args('data') { email, password }: SignInInput) {
+  async signIn(@Args('signInInput') { email, password }: SignInInput) {
     const { accessToken, refreshToken } = await this.auth.signIn(
       email.toLowerCase(),
       password,

@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password/password.service';
 import { Token } from './models/token.model';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/common/prisma.service';
 import { authConstants } from './auth.constants';
 import SignUpInput from './dto/sign-up.input';
 

@@ -1,4 +1,16 @@
-# nestjs-prisma-postgresql-graphql
+# General
+
+This is starter of a Nest.js 10 application with Prisma ORM, PostgreSQL, Redis and GraphQL.
+
+# Technology stack
+- JWT Authentication
+- Prisma ORM
+- GraphQL
+- Apollo Driver for GraphQL
+- Docker Compose
+- PostgreSQL
+- Redis
+- Health Check
 
 # Development
 

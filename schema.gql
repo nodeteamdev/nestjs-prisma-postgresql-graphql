@@ -8,11 +8,10 @@ directive @upper on FIELD_DEFINITION
 type User {
   id: Int!
   email: String!
-  password: String!
   role: Role!
   name: String
   dateCreated: Timestamp!
-  posts: [Post]!
+  posts: [Post!]
 }
 
 """User role"""
@@ -61,6 +60,7 @@ type Auth {
 }
 
 type Query {
+  users: [User!]!
   user(id: Int!): User!
   posts(skip: Int, take: Int! = 10, cursor: Int, order: Order! = asc): [Post!]!
   post(id: Int!): Post!
@@ -79,8 +79,8 @@ type Mutation {
   createPost(createPostInput: CreatePostInput!): Post!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!
-  signUp(data: SignUpInput!): Auth!
-  signIn(data: SignInInput!): Auth!
+  signUp(signUpInput: SignUpInput!): Auth!
+  signIn(signInInput: SignInInput!): Auth!
   refreshToken(refreshTokenInput: RefreshTokenInput!): Token!
 }
 

@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import SignUpInput from '@auth/dto/sign-up.input';
+import SignUpInput from 'src/auth/dto/sign-up.input';
 import { Role } from '@prisma/client';
 
 @InputType()

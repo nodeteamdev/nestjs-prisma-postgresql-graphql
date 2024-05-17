@@ -3,7 +3,7 @@ import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
 import { PrismaClient, Role } from '@prisma/client';
 import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'src/common/prisma.service';
 
 describe('UserResolver', () => {
   let resolver: UserResolver;

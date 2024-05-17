@@ -16,9 +16,10 @@
     "incremental": true,
     "skipLibCheck": true,
     "paths": {
-      "@user/*": ["src/app/user/*"],
-      "@post/*": ["src/app/post/*"],
-      "@auth/*": ["src/app/auth/*"],
+      "@user/*": ["src/user/*"],
+      "@post/*": ["src/post/*"],
+      "@auth/*": ["src/auth/*"],
+      "@common/*": ["src/common/*"],
     },
   }
 }
