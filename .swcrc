@@ -19,7 +19,12 @@
       "@user/*": ["src/modules/user/*"],
       "@post/*": ["src/modules/post/*"],
       "@auth/*": ["src/modules/auth/*"],
-      "@common/*": ["src/common/*"],
+      "@health/*": ["src/modules/health/*"],
+      "@decorators/*": ["src/decorators/*"],
+      "@directives/*": ["src/directives/*"],
+      "@dto/*": ["src/dto/*"],
+      "@types/*": ["src/types/*"],
+      "@models/*": ["src/models/*"],
       "src/*": ["src/*"],
       "*": [
         "node_modules",

@@ -59,6 +59,11 @@ type Auth {
   user: User!
 }
 
+type Success {
+  """Is result successful"""
+  success: Boolean!
+}
+
 type Query {
   users: [User!]!
   user(id: Int!): User!
@@ -82,6 +87,7 @@ type Mutation {
   signUp(signUpInput: SignUpInput!): Auth!
   signIn(signInInput: SignInInput!): Auth!
   refreshToken(refreshTokenInput: RefreshTokenInput!): Token!
+  logout: Success!
 }
 
 input CreateUserInput {
