@@ -12,6 +12,8 @@ import { AuthService } from './auth.service';
 import SignUpInput from './dto/sign-up.input';
 import SignInInput from './dto/sign-in.input';
 import RefreshTokenInput from './dto/refresh-token.input';
+import { CurrentUser } from '@common/decorators/current-user.decorator';
+import { Success } from '@common/models/success.model';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -51,6 +53,15 @@ export class AuthResolver {
 
   @ResolveField('user', () => User)
   async user(@Parent() auth: Auth) {
-    return await this.auth.getUserFromToken(auth.accessToken);
+    return this.auth.getUserFromToken(auth.accessToken);
+  }
+
+  @Mutation(() => Success)
+  async logout(@CurrentUser() user: User) {
+    await this.auth.forgetUser(user.id);
+
+    return {
+      success: true,
+    };
   }
 }

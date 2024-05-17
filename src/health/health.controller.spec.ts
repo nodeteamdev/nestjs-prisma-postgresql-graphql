@@ -12,13 +12,13 @@ describe('HealthController', () => {
     controller = module.get<HealthController>(HealthController);
   });
 
-  it('Prisma OK', async () => {
+  it('prismaCheck', async () => {
     const res = await controller.prismaCheck();
 
     expect(res.status).toBe('ok');
   });
 
-  it('Memory OK', async () => {
+  it('memoryCheck', async () => {
     const res = await controller.memoryCheck();
 
     expect(res.status).toBe('ok');

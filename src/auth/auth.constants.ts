@@ -5,4 +5,9 @@ export const authConstants = Object.freeze({
     accessTtl: 60 * 5,
     refreshTtl: 60 * 60 * 24 * 3,
   },
+  // jwt TTL, but in milliseconds
+  whitelist: {
+    accessTtl: 60 * 5 * 100,
+    refreshTtl: 60 * 60 * 24 * 3 * 100,
+  },
 });

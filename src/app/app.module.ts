@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import type { RedisClientOptions } from 'redis';
+import { redisStore } from 'cache-manager-redis-yet';
 import { PostModule } from '@post/post.module';
 import { UserModule } from '@user/user.module';
 import { AuthModule } from '@auth/auth.module';
 import { CacheModule } from '@nestjs/cache-manager';
-import { appConstants } from './app.constants';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
@@ -13,11 +14,15 @@ import { HealthModule } from 'src/health/health.module';
 
 @Module({
   imports: [
-    CacheModule.registerAsync({
-      useFactory: () => ({
-        ttl: appConstants.cacheDefaultTtl,
-        isGlobal: true,
+    CacheModule.registerAsync<RedisClientOptions>({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        ttl: configService.get<number>('CACHE_TTL'),
+        store: redisStore,
+        url: configService.get<string>('REDIS_URL'),
+        password: configService.get<string>('REDIS_PASSWORD'),
       }),
+      inject: [ConfigService],
     }),
     ConfigModule.forRoot({
       isGlobal: true,

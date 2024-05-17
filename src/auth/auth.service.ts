@@ -13,6 +13,7 @@ import { Token } from './models/token.model';
 import { PrismaService } from '@common/prisma.service';
 import { authConstants } from './auth.constants';
 import SignUpInput from './dto/sign-up.input';
+import { TokenService } from './token.service';
 
 @Injectable()
 export class AuthService {
@@ -21,6 +22,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService,
+    private readonly tokenService: TokenService,
   ) {}
 
   async signUp(payload: SignUpInput): Promise<Token> {
@@ -36,9 +38,16 @@ export class AuthService {
         },
       });
 
-      return this.generateTokens({
+      const tokens = this.generateTokens({
         userId: user.id,
       });
+
+      await this.tokenService.addUserToWhitelist({
+        ...tokens,
+        userId: user.id,
+      });
+
+      return tokens;
     } catch (e) {
       if (
         e instanceof Prisma.PrismaClientKnownRequestError &&
@@ -66,9 +75,16 @@ export class AuthService {
       throw new BadRequestException('Invalid password');
     }
 
-    return this.generateTokens({
+    const tokens = this.generateTokens({
       userId: user.id,
     });
+
+    await this.tokenService.addUserToWhitelist({
+      ...tokens,
+      userId: user.id,
+    });
+
+    return tokens;
   }
 
   validateUser(userId: number): Promise<User> {
@@ -101,17 +117,35 @@ export class AuthService {
     });
   }
 
-  refreshToken(token: string) {
+  async refreshToken(token: string) {
     try {
       const { userId } = this.jwtService.verify(token, {
         secret: this.configService.get('JWT_REFRESH_SECRET'),
       });
 
-      return this.generateTokens({
+      const savedToken =
+        await this.tokenService.getRefreshTokenFromWhitelist(userId);
+
+      if (savedToken !== token) {
+        throw new Error('Token mismatch');
+      }
+
+      const tokens = this.generateTokens({
         userId,
       });
+
+      await this.tokenService.addUserToWhitelist({
+        ...tokens,
+        userId,
+      });
+
+      return tokens;
     } catch (e) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Refresh token is invalid or expired');
     }
+  }
+
+  forgetUser(userId: number) {
+    return this.tokenService.removeUserFromWhitelist(userId);
   }
 }

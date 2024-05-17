@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { authConstants } from './auth.constants';
 import { PrismaService } from 'src/common/prisma.service';
+import { TokenService } from './token.service';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { PrismaService } from 'src/common/prisma.service';
     JwtStrategy,
     GqlAuthGuard,
     PrismaService,
+    TokenService,
   ],
   exports: [GqlAuthGuard],
 })
