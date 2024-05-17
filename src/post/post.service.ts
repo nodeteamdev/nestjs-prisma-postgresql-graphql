@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { PrismaService } from '../common/prisma.service';
+import { PrismaService } from '@common/prisma.service';
 import { Post } from './models/post.model';
-import { PaginationArgs } from '../common/dto/pagination.args';
+import { PaginationArgs } from '@common/dto/pagination.args';
 
 @Injectable()
 export class PostService {

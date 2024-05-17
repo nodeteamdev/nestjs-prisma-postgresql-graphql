@@ -9,12 +9,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { upperDirectiveTransformer } from 'src/common/directives/upper-case.directive';
+import { HealthModule } from 'src/health/health.module';
 
 @Module({
   imports: [
-    UserModule,
-    PostModule,
-    AuthModule,
     CacheModule.registerAsync({
       useFactory: () => ({
         ttl: appConstants.cacheDefaultTtl,
@@ -38,6 +36,10 @@ import { upperDirectiveTransformer } from 'src/common/directives/upper-case.dire
         ],
       },
     }),
+    UserModule,
+    PostModule,
+    AuthModule,
+    HealthModule,
   ],
 })
 export class AppModule {}
