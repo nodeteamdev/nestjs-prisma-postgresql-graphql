@@ -25,6 +25,8 @@
       "@dto/*": ["src/dto/*"],
       "@types/*": ["src/types/*"],
       "@models/*": ["src/models/*"],
+      "@providers/*": ["src/providers/*"],
+      "@mocks/*": ["src/tests/mocks/*"],
       "src/*": ["src/*"],
       "*": [
         "node_modules",

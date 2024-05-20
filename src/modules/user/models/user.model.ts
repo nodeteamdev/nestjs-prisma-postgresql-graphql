@@ -29,7 +29,7 @@ export class User {
   role: Role;
 
   @Field({ nullable: true })
-  name?: string;
+  name: string | null;
 
   @Field(() => GraphQLTimestamp)
   dateCreated: Date;

@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"<rootDir>/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -88,7 +88,20 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@app(.*)": ["<rootDir>/modules/app/$1"],
+      "@user(.*)": ["<rootDir>/modules/user/$1"],
+      "@post(.*)": ["<rootDir>/modules/post/$1"],
+      "@auth(.*)": ["<rootDir>/modules/auth/$1"],
+      "@health(.*)": ["<rootDir>/modules/health/$1"],
+      "@decorators(.*)": ["<rootDir>/decorators/$1"],
+      "@directives(.*)": ["<rootDir>/directives/$1"],
+      "@dto(.*)": ["<rootDir>/dto/$1"],
+      "@models(.*)": ["<rootDir>/models/$1"],
+      "@providers(.*)": ["<rootDir>/providers/$1"],
+      "@mocks(.*)": ["<rootDir>/tests/mocks/$1"]
+    }
   },
   "config": {
     "commitizen": {

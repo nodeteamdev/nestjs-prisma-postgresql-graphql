@@ -8,7 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigService } from '@nestjs/config';
 import { authConstants } from './auth.constants';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '@providers/prisma/prisma.service';
 import { TokenService } from './token.service';
 
 @Module({

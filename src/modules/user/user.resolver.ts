@@ -1,24 +1,20 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserService } from './user.service';
-import UpdateUserInput from './dto/update-user.input';
-import CreateUserInput from './dto/create-user.input';
 import { User } from './models/user.model';
 import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@auth/guards/gql-auth.guard';
+import UpdateUserInput from './dto/update-user.input';
+import { CurrentUser } from '@decorators/current-user.decorator';
+import { PaginationArgs } from '@dto/pagination.args';
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
-  @Mutation(() => User)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.createOne(createUserInput);
-  }
-
   @Query(() => [User], { name: 'users' })
-  findAll() {
-    return this.userService.many({});
+  findAll(@Args() pagination: PaginationArgs) {
+    return this.userService.many(pagination);
   }
 
   @Query(() => User, { name: 'user' })
@@ -27,10 +23,13 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput) {
+  updateUser(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @CurrentUser() user: User,
+  ) {
     return this.userService.updateOne({
       where: {
-        id: updateUserInput.id,
+        id: user.id,
       },
       data: {
         ...updateUserInput,
@@ -39,7 +38,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  removeUser(@Args('id', { type: () => Int }) id: number) {
-    return this.userService.deleteOne({ id });
+  removeUser(@CurrentUser() user: User) {
+    return this.userService.deleteOne({ id: user.id });
   }
 }

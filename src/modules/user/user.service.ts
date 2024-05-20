@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '@providers/prisma/prisma.service';
 import { User, Prisma } from '@prisma/client';
+import { PaginationArgs } from '@dto/pagination.args';
 
 @Injectable()
 export class UserService {
@@ -14,26 +15,20 @@ export class UserService {
     });
   }
 
-  async many(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<User[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
-  }
+  async many(pagination: PaginationArgs): Promise<User[]> {
+    const cursor = pagination.cursor
+      ? {
+          id: pagination.cursor,
+        }
+      : undefined;
 
-  async createOne(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
+    return this.prisma.user.findMany({
+      skip: pagination.skip,
+      take: pagination.take,
+      cursor,
+      orderBy: {
+        id: pagination.order,
+      },
     });
   }
 

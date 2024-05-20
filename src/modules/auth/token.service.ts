@@ -38,11 +38,15 @@ export class TokenService {
     ]);
   }
 
-  async getAccessTokenFromWhitelist(userId: number): Promise<string> {
+  async getAccessTokenFromWhitelist(
+    userId: number,
+  ): Promise<string | undefined> {
     return this.cacheManager.get<string>(this.accessUserKey(userId));
   }
 
-  async getRefreshTokenFromWhitelist(userId: number): Promise<string> {
+  async getRefreshTokenFromWhitelist(
+    userId: number,
+  ): Promise<string | undefined> {
     return this.cacheManager.get<string>(this.refreshUserKey(userId));
   }
 }

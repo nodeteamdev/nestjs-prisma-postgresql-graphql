@@ -1,15 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { PrismaClient, Role } from '@prisma/client';
+import { mockDeep, DeepMockProxy, mockReset } from 'jest-mock-extended';
+import { PrismaService } from '@providers/prisma/prisma.service';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
-import { PrismaClient, Role } from '@prisma/client';
-import { mockDeep, DeepMockProxy } from 'jest-mock-extended';
-import { PrismaService } from 'src/prisma.service';
+import { mockedUser } from '@mocks/user.mock';
+import Order from '@dto/gql-order.enum';
 
 describe('UserResolver', () => {
   let resolver: UserResolver;
   let prismaMock: DeepMockProxy<PrismaClient>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     prismaMock = mockDeep<PrismaClient>();
 
     const module: TestingModule = await Test.createTestingModule({
@@ -26,18 +28,57 @@ describe('UserResolver', () => {
     resolver = module.get<UserResolver>(UserResolver);
   });
 
+  beforeEach(() => {
+    mockReset(prismaMock);
+  });
+
   it('should be defined', () => {
     expect(resolver).toBeDefined();
   });
 
-  it('should create user', async () => {
-    const createUserInput = {
-      email: 'test@gmail.com.invalid',
-      password: 'test-password',
-      name: 'Test',
-      role: Role.USER,
+  it('should find user in array', async () => {
+    prismaMock.user.findMany.mockResolvedValue([mockedUser]);
+
+    expect(
+      await resolver.findAll({
+        skip: 0,
+        take: 10,
+        order: Order.desc,
+      }),
+    ).toHaveLength(1);
+  });
+
+  it('should find user by id', async () => {
+    prismaMock.user.findUnique.mockResolvedValue(mockedUser);
+
+    expect(await resolver.findOne(mockedUser.id)).toHaveProperty(
+      'name',
+      mockedUser.name,
+    );
+  });
+
+  it('should update user', async () => {
+    const { id, ...updateUserInput } = {
+      ...mockedUser,
+      role: Role.ADMIN,
     };
 
-    expect(await resolver.createUser(createUserInput)).toHaveProperty(['id']);
+    prismaMock.user.update.mockResolvedValue({
+      ...updateUserInput,
+      id,
+    });
+
+    const result = await resolver.updateUser(updateUserInput, mockedUser);
+
+    expect(result).toHaveProperty('role', updateUserInput.role);
+  });
+
+  it('should remove post', async () => {
+    prismaMock.user.delete.mockResolvedValue(mockedUser);
+
+    expect(await resolver.removeUser(mockedUser)).toHaveProperty(
+      'id',
+      mockedUser.id,
+    );
   });
 });

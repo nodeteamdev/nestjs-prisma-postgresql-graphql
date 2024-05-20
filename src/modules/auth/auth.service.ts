@@ -10,7 +10,7 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password/password.service';
 import { Token } from './models/token.model';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '@providers/prisma/prisma.service';
 import { authConstants } from './auth.constants';
 import SignUpInput from './dto/sign-up.input';
 import { TokenService } from './token.service';
@@ -87,13 +87,22 @@ export class AuthService {
     return tokens;
   }
 
-  validateUser(userId: number): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id: userId } });
+  async validateUser(userId: number): Promise<User> {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) throw new BadRequestException('User not found');
+
+    return user;
   }
 
-  getUserFromToken(token: string): Promise<User> {
+  async getUserFromToken(token: string): Promise<User> {
     const id = this.jwtService.decode(token)['userId'];
-    return this.prisma.user.findUnique({ where: { id } });
+
+    const user = await this.prisma.user.findUnique({ where: { id } });
+
+    if (!user) throw new BadRequestException('User not found');
+
+    return user;
   }
 
   generateTokens(payload: { userId: number }): Token {

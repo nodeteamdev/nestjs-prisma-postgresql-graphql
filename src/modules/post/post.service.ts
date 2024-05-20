@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { PrismaService } from 'src/prisma.service';
-import { Post } from './models/post.model';
+import { Post, Prisma } from '@prisma/client';
+import { PrismaService } from '@providers/prisma/prisma.service';
 import { PaginationArgs } from '@dto/pagination.args';
+import CreatePostWithAuthorInput from './dto/create-post-with-author.dto';
 
 @Injectable()
 export class PostService {
@@ -33,7 +33,7 @@ export class PostService {
     });
   }
 
-  async createOne(data: Prisma.PostCreateInput): Promise<Post> {
+  async createOne(data: CreatePostWithAuthorInput): Promise<Post> {
     return this.prisma.post.create({
       data,
     });

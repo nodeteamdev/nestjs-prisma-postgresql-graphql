@@ -5,13 +5,13 @@ import { IsEmail, IsStrongPassword, Length } from 'class-validator';
 export default class SignUpInput {
   @Field(() => String, { nullable: false })
   @IsEmail()
-  email!: string;
+  email: string;
 
   @Field(() => String, { nullable: false })
   @IsStrongPassword({ minLength: 8 })
-  password!: string;
+  password: string;
 
   @Field(() => String, { nullable: true })
   @Length(1)
-  name?: string | null;
+  name: string | null;
 }

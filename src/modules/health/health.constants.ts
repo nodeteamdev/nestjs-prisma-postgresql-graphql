@@ -1,3 +1,3 @@
 export default Object.freeze({
-  memoryHeapLimit: 150, // In MegaBytes
+  memoryHeapLimit: 300, // In MegaBytes
 });

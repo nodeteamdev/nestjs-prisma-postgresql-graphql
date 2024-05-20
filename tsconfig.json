@@ -15,6 +15,7 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+    "strictNullChecks": true,
     "paths": {
       "@app/*": ["src/modules/app/*"],
       "@user/*": ["src/modules/user/*"],
@@ -25,6 +26,8 @@
       "@directives/*": ["src/directives/*"],
       "@dto/*": ["src/dto/*"],
       "@models/*": ["src/models/*"],
+      "@providers/*": ["src/providers/*"],
+      "@mocks/*": ["src/tests/mocks/*"],
     },
   }
 }
