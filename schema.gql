@@ -65,7 +65,7 @@ type Success {
 }
 
 type Query {
-  users: [User!]!
+  users(skip: Int, take: Int! = 10, cursor: Int, order: Order! = asc): [User!]!
   user(id: Int!): User!
   posts(skip: Int, take: Int! = 10, cursor: Int, order: Order! = asc): [Post!]!
   post(id: Int!): Post!
@@ -78,9 +78,8 @@ enum Order {
 }
 
 type Mutation {
-  createUser(createUserInput: CreateUserInput!): User!
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  removeUser: User!
   createPost(createPostInput: CreatePostInput!): Post!
   updatePost(updatePostInput: UpdatePostInput!): Post!
   removePost(id: Int!): Post!
@@ -90,31 +89,20 @@ type Mutation {
   logout: Success!
 }
 
-input CreateUserInput {
+input UpdateUserInput {
   email: String!
   password: String!
   name: String
-  role: Role!
-}
-
-input UpdateUserInput {
-  email: String
-  password: String
-  name: String
-  role: Role
-  id: Int!
 }
 
 input CreatePostInput {
   title: String!
   content: String!
-  authorId: Int!
 }
 
 input UpdatePostInput {
   title: String
   content: String
-  authorId: Int
   id: Int!
   published: Boolean!
 }
