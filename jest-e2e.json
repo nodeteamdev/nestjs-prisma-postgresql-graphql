@@ -1,0 +1,22 @@
+{
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "rootDir": "src",
+  "testEnvironment": "node",
+  "testRegex": "\\.e2e-spec\\.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app(.*)": ["<rootDir>/modules/app/$1"],
+    "@user(.*)": ["<rootDir>/modules/user/$1"],
+    "@post(.*)": ["<rootDir>/modules/post/$1"],
+    "@auth(.*)": ["<rootDir>/modules/auth/$1"],
+    "@health(.*)": ["<rootDir>/modules/health/$1"],
+    "@decorators(.*)": ["<rootDir>/decorators/$1"],
+    "@directives(.*)": ["<rootDir>/directives/$1"],
+    "@dto(.*)": ["<rootDir>/dto/$1"],
+    "@models(.*)": ["<rootDir>/models/$1"],
+    "@providers(.*)": ["<rootDir>/providers/$1"],
+    "@mocks(.*)": ["<rootDir>/tests/mocks/$1"]
+  }
+}

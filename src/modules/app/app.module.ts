@@ -14,6 +14,9 @@ import { HealthModule } from '@health/health.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     CacheModule.registerAsync<RedisClientOptions>({
       isGlobal: true,
       imports: [ConfigModule],
@@ -24,9 +27,6 @@ import { HealthModule } from '@health/health.module';
         password: configService.get<string>('REDIS_PASSWORD'),
       }),
       inject: [ConfigService],
-    }),
-    ConfigModule.forRoot({
-      isGlobal: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
