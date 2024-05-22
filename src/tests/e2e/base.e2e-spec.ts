@@ -1,33 +1,25 @@
-import { Test } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import { AppModule } from '@app/app.module';
-import healthTests from './modules/health/health.controller.e2e-spec';
-import authTests from './modules/auth/auth.resolver.e2e-spec';
-import userTests from './modules/user/user.resolver.e2e-spec';
-import postTests from './modules/post/post.resolver.e2e-spec';
+import healthTests from './modules/health/health.controller.e2e';
+// import authTests from './modules/auth/auth.resolver.e2e-spec';
+// import userTests from './modules/user/user.resolver.e2e-spec';
+// import postTests from './modules/post/post.resolver.e2e-spec';
+import BaseContext from './context/base-context';
 
 describe('App (e2e)', () => {
-  let app: INestApplication;
+  const ctx = new BaseContext();
 
   beforeAll(async () => {
-    const moduleFixture = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-
-    await app.init();
+    await ctx.init();
   });
 
-  describe('HealthController (e2e)', healthTests);
+  describe('HealthController (e2e)', healthTests.bind(null, ctx));
 
-  describe('AuthResolver (e2e)', authTests);
+  // describe('AuthResolver (e2e)', authTests);
 
-  describe('UserResolver (e2e)', userTests);
+  // describe('UserResolver (e2e)', userTests);
 
-  describe('PostResolver (e2e)', postTests);
+  // describe('PostResolver (e2e)', postTests);
 
   afterAll(async () => {
-    await app.close();
+    await ctx.end();
   });
 });

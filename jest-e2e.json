@@ -17,6 +17,7 @@
     "@dto(.*)": ["<rootDir>/dto/$1"],
     "@models(.*)": ["<rootDir>/models/$1"],
     "@providers(.*)": ["<rootDir>/providers/$1"],
+    "@tests(.*)": ["<rootDir>/tests/$1"],
     "@mocks(.*)": ["<rootDir>/tests/mocks/$1"]
   }
 }

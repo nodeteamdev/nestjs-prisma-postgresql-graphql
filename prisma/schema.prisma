@@ -34,15 +34,6 @@ model Post {
   dateModified DateTime @updatedAt
 }
 
-model TokenWhiteList {
-  id           Int   @default(autoincrement()) @id
-  userId       String
-  refreshToken String?
-  expiredAt    DateTime
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-}
-
 enum Role {
   ADMIN
   USER

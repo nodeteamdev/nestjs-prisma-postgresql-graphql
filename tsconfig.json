@@ -27,6 +27,7 @@
       "@dto/*": ["src/dto/*"],
       "@models/*": ["src/models/*"],
       "@providers/*": ["src/providers/*"],
+      "@tests/*": ["src/tests/*"],
       "@mocks/*": ["src/tests/mocks/*"],
     },
   }

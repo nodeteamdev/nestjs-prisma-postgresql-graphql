@@ -26,6 +26,7 @@
       "@types/*": ["src/types/*"],
       "@models/*": ["src/models/*"],
       "@providers/*": ["src/providers/*"],
+      "@tests/*": ["src/tests/*"],
       "@mocks/*": ["src/tests/mocks/*"],
       "src/*": ["src/*"],
       "*": [
