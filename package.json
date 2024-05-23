@@ -21,7 +21,7 @@
     "test:watch": "env-cmd -f ./config/.env.development jest --watch",
     "test:cov": "env-cmd -f ./config/.env.development jest --coverage",
     "test:debug": "env-cmd -f ./config/.env.development node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
-    "test:e2e": "env-cmd -f ./config/.env.test jest --config jest-e2e.json"
+    "test:e2e": "npm run db:push:test && env-cmd -f ./config/.env.test jest --config jest-e2e.json"
   },
   "dependencies": {
     "@apollo/server": "4.10.4",
@@ -48,6 +48,7 @@
     "rxjs": "7.8.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@nestjs/cli": "10.3.1",
     "@nestjs/schematics": "10.1.0",
     "@nestjs/testing": "10.3.2",

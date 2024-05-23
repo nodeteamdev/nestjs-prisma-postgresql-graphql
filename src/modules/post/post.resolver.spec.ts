@@ -6,7 +6,7 @@ import { mockDeep, DeepMockProxy, mockReset } from 'jest-mock-extended';
 import { PrismaService } from '@providers/prisma/prisma.service';
 import { mockedPost } from '@mocks/post.mock';
 import { CreatePostInput } from './dto/create-post.input';
-import { mockedUser } from '@mocks/user.mock';
+import { defaultUser } from '@mocks/user.mock';
 import Order from '@dto/gql-order.enum';
 import { UpdatePostInput } from './dto/update-post.input';
 
@@ -47,7 +47,7 @@ describe('PostResolver', () => {
 
     prismaMock.post.create.mockResolvedValue(mockedPost);
 
-    expect(await resolver.createPost(postInput, mockedUser)).toHaveProperty(
+    expect(await resolver.createPost(postInput, defaultUser)).toHaveProperty(
       'id',
       1,
     );
@@ -88,16 +88,15 @@ describe('PostResolver', () => {
     });
 
     expect(
-      await resolver.updatePost(postUpdateInput, mockedUser),
+      await resolver.updatePost(postUpdateInput, defaultUser),
     ).toHaveProperty('published', true);
   });
 
   it('should remove post', async () => {
     prismaMock.post.delete.mockResolvedValue(mockedPost);
 
-    expect(await resolver.removePost(mockedPost.id, mockedUser)).toHaveProperty(
-      'id',
-      mockedPost.id,
-    );
+    expect(
+      await resolver.removePost(mockedPost.id, defaultUser),
+    ).toHaveProperty('id', mockedPost.id);
   });
 });

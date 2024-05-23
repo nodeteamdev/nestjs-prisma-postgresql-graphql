@@ -13,7 +13,7 @@ import { GqlAuthGuard } from './guards/gql-auth.guard';
 import { JwtStrategy } from './jwt.strategy';
 import { TokenService } from './token.service';
 import { CacheModule } from '@nestjs/cache-manager';
-import { mockedPassword, mockedUser } from '@mocks/user.mock';
+import { defaultPassword, defaultUser } from '@mocks/user.mock';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;
@@ -72,11 +72,11 @@ describe('AuthResolver', () => {
   });
 
   it('signUp', async () => {
-    prismaMock.user.create.mockResolvedValue(mockedUser);
+    prismaMock.user.create.mockResolvedValue(defaultUser);
 
     const res = await resolver.signUp({
-      ...mockedUser,
-      password: mockedPassword,
+      ...defaultUser,
+      password: defaultPassword,
     });
 
     expect(res).toBeDefined();
@@ -86,11 +86,11 @@ describe('AuthResolver', () => {
   });
 
   it('signIn', async () => {
-    prismaMock.user.findUnique.mockResolvedValue(mockedUser);
+    prismaMock.user.findUnique.mockResolvedValue(defaultUser);
 
     const res = await resolver.signIn({
-      email: mockedUser.email,
-      password: mockedPassword,
+      email: defaultUser.email,
+      password: defaultPassword,
     });
 
     expect(res).toBeDefined();
@@ -118,7 +118,7 @@ describe('AuthResolver', () => {
   it('refreshToken', async () => {
     const res = await resolver.logout(
       {
-        ...mockedUser,
+        ...defaultUser,
         posts: [],
       },
       accessToken,

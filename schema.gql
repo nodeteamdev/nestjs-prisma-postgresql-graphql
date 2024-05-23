@@ -90,8 +90,8 @@ type Mutation {
 }
 
 input UpdateUserInput {
-  email: String!
-  password: String!
+  email: String
+  password: String
   name: String
 }
 

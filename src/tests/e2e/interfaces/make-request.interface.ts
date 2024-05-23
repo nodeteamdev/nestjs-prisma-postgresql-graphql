@@ -11,4 +11,6 @@ export interface IMakeRequest {
   putAuth: (url: string, token: string) => supertest.Test;
   patch: (url: string) => supertest.Test;
   patchAuth: (url: string, token: string) => supertest.Test;
+  getGql: (query: string) => supertest.Test;
+  getGqlAuth: (token: string, query: string) => supertest.Test;
 }

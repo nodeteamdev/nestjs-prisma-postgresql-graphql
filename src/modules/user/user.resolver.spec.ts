@@ -4,7 +4,7 @@ import { mockDeep, DeepMockProxy, mockReset } from 'jest-mock-extended';
 import { PrismaService } from '@providers/prisma/prisma.service';
 import { UserResolver } from './user.resolver';
 import { UserService } from './user.service';
-import { mockedUser } from '@mocks/user.mock';
+import { defaultUser } from '@mocks/user.mock';
 import Order from '@dto/gql-order.enum';
 
 describe('UserResolver', () => {
@@ -37,7 +37,7 @@ describe('UserResolver', () => {
   });
 
   it('should find user in array', async () => {
-    prismaMock.user.findMany.mockResolvedValue([mockedUser]);
+    prismaMock.user.findMany.mockResolvedValue([defaultUser]);
 
     expect(
       await resolver.findAll({
@@ -49,17 +49,17 @@ describe('UserResolver', () => {
   });
 
   it('should find user by id', async () => {
-    prismaMock.user.findUnique.mockResolvedValue(mockedUser);
+    prismaMock.user.findUnique.mockResolvedValue(defaultUser);
 
-    expect(await resolver.findOne(mockedUser.id)).toHaveProperty(
+    expect(await resolver.findOne(defaultUser.id)).toHaveProperty(
       'name',
-      mockedUser.name,
+      defaultUser.name,
     );
   });
 
   it('should update user', async () => {
     const { id, ...updateUserInput } = {
-      ...mockedUser,
+      ...defaultUser,
       role: Role.ADMIN,
     };
 
@@ -68,17 +68,17 @@ describe('UserResolver', () => {
       id,
     });
 
-    const result = await resolver.updateUser(updateUserInput, mockedUser);
+    const result = await resolver.updateUser(updateUserInput, defaultUser);
 
     expect(result).toHaveProperty('role', updateUserInput.role);
   });
 
   it('should remove post', async () => {
-    prismaMock.user.delete.mockResolvedValue(mockedUser);
+    prismaMock.user.delete.mockResolvedValue(defaultUser);
 
-    expect(await resolver.removeUser(mockedUser)).toHaveProperty(
+    expect(await resolver.removeUser(defaultUser)).toHaveProperty(
       'id',
-      mockedUser.id,
+      defaultUser.id,
     );
   });
 });

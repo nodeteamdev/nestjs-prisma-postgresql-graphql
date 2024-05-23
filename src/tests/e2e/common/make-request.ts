@@ -58,4 +58,19 @@ export default (server: Server): IMakeRequest => ({
       .set('accept', 'application/json')
       .set('Content-Type', 'application/json')
       .set({ Authorization: `Bearer ${token}` }),
+  getGql: (query: string) =>
+    request(server)
+      .post('/graphql')
+      .type('form')
+      .set('accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .send({ query }),
+  getGqlAuth: (token: string, query: string) =>
+    request(server)
+      .post('/graphql')
+      .type('form')
+      .set('accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .set({ Authorization: `Bearer ${token}` })
+      .send({ query }),
 });
