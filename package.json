@@ -6,9 +6,10 @@
   "license": "MIT",
   "scripts": {
     "db:up": "env-cmd -f ./config/.env.development docker compose up -d",
-    "db:push": "env-cmd -f ./config/.env.production npx prisma db push",
-    "db:push:dev": "env-cmd -f ./config/.env.development npx prisma db push",
-    "db:push:test": "env-cmd -f ./config/.env.test npx prisma db push --force-reset",
+    "db:generate": "env-cmd -f ./config/.env.development prisma generate",
+    "db:push": "env-cmd -f ./config/.env.development prisma db push",
+    "db:push:prod": "env-cmd -f ./config/.env.production prisma db push",
+    "db:push:test": "env-cmd -f ./config/.env.test prisma db push --force-reset",
     "db:down": "env-cmd -f ./config/.env.development docker compose down",
     "build": "nest build",
     "format": "prettier --write \"<rootDir>/**/*.ts\" \"test/**/*.ts\"",
