@@ -4,7 +4,7 @@ import { getMockedUser, getMockedPassword } from '@tests/mocks/user.mock';
 
 const authTests = (ctx: BaseContext) => {
   const mockedPassword = getMockedPassword();
-  const mockedUser = getMockedUser();
+  const mockedUser = getMockedUser(mockedPassword);
   let accessToken = 'no-token';
   let refreshToken = 'no-token';
 
@@ -28,7 +28,7 @@ const authTests = (ctx: BaseContext) => {
     const res = await ctx.request.getGql(`mutation {
       signIn(signInInput: {
          email: "${mockedUser.email}",
-         password: "${mockedUser.password}"
+         password: "${mockedPassword}"
       }) {
         accessToken
         refreshToken
@@ -46,7 +46,7 @@ const authTests = (ctx: BaseContext) => {
     const res = await ctx.request.getGql(`mutation {
       signIn(signInInput: {
          email: "${mockedUser.email}",
-         password: "${mockedUser.password}"
+         password: "${mockedPassword}"
       }) {
         accessToken
         refreshToken

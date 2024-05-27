@@ -1,4 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { PostService } from './post.service';
 import { Post } from './models/post.model';
 import { CreatePostInput } from './dto/create-post.input';
@@ -7,7 +15,7 @@ import { UseGuards } from '@nestjs/common';
 import { GqlAuthGuard } from '@auth/guards/gql-auth.guard';
 import { PaginationArgs } from '@dto/pagination.args';
 import { CurrentUser } from '@decorators/current-user.decorator';
-import { User } from '@prisma/client';
+import { User } from '@user/models/user.model';
 
 @Resolver(() => Post)
 export class PostResolver {
@@ -44,7 +52,7 @@ export class PostResolver {
     return this.postService.updateOne({
       where: {
         id: updatePostInput.id,
-        author,
+        authorId: author.id,
       },
       data: {
         ...updatePostInput,
@@ -58,6 +66,11 @@ export class PostResolver {
     @Args('id', { type: () => Int }) id: number,
     @CurrentUser() author: User,
   ) {
-    return this.postService.deleteOne({ id, author });
+    return this.postService.deleteOne({ id, authorId: author.id });
+  }
+
+  @ResolveField('author', () => User)
+  async author(@Parent() post: Post) {
+    return this.postService.authorByPost(post.id);
   }
 }

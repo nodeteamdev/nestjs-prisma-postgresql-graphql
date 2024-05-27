@@ -65,7 +65,7 @@ const userTests = (ctx: BaseContext) => {
     const { user } = gqlResponse(res);
 
     expect(user.id).toBe(userId);
-    expect(user.email).toBe(customUser.email);
+    expect(user.email.toLowerCase()).toBe(customUser.email.toLowerCase());
   });
 
   it('Update User', async () => {

@@ -2,13 +2,14 @@ import Order from '@dto/gql-order.enum';
 import { faker } from '@faker-js/faker';
 import gqlResponse from '@tests/e2e/common/gql-response';
 import BaseContext from '@tests/e2e/context/base-context';
+import { getMockedPost } from '@tests/mocks/post.mock';
 import { getMockedPassword, getMockedUser } from '@tests/mocks/user.mock';
 
 const postTests = (ctx: BaseContext) => {
   const customPassword = getMockedPassword();
-  const customUser = getMockedUser(customPassword);
+  let customUser = getMockedUser(customPassword);
+  let customPost = getMockedPost(customUser);
   let accessToken = 'no-token';
-  let postId = 0;
 
   beforeAll(async () => {
     await ctx.request.getGql(`mutation {
@@ -35,73 +36,120 @@ const postTests = (ctx: BaseContext) => {
     const { signIn } = gqlResponse(res);
 
     accessToken = signIn.accessToken;
+    customUser = {
+      ...customUser,
+      id: signIn.user.id,
+    };
+    customPost = {
+      ...customPost,
+      author: customUser,
+      authorId: customUser.id,
+    };
   });
 
-  it('Get posts', async () => {
-    const res = await ctx.request.getGql(`mutation {
+  it('Create post', async () => {
+    const res = await ctx.request.getGqlAuth(
+      accessToken,
+      `mutation {
       createPost(createPostInput: {
-         title: "${faker.word.noun}"
-         content: "${faker.string.alphanumeric({ length: { min: 20, max: 100 } })}"
+         title: "${customPost.title}"
+         content: "${customPost.content}"
       }) {
         id
         title
         content
+        author {
+          id
+        }
       }
-    }`);
+    }`,
+    );
+    const { createPost } = gqlResponse(res);
+
+    expect(createPost.id).toBe(customPost.id);
+    expect(createPost.author.id).toBe(customPost.authorId);
+
+    customPost = createPost;
+  });
+
+  it('Get posts', async () => {
+    const res = await ctx.request.getGqlAuth(
+      accessToken,
+      `{
+      posts(take: 1, order: ${Order.desc}) {
+        id
+      }
+    }`,
+    );
     const { posts } = gqlResponse(res);
 
     expect(posts.length).toBeGreaterThanOrEqual(1);
-    expect(posts[0].id).toBeGreaterThan(0);
+    expect(posts[0].id).toBeGreaterThanOrEqual(1);
   });
 
   it('Get post', async () => {
     const res = await ctx.request.getGqlAuth(
       accessToken,
       `{
-      post(id: ${postId}) {
-        id
-        email
-      }
-    }`,
+        post(id: ${customPost.id}) {
+          id
+          title
+          author {
+            id
+          }
+        }
+      }`,
     );
     const { post } = gqlResponse(res);
 
-    expect(post.id).toBe(postId);
-    expect(post.email).toBe(customPost.email);
+    expect(post.id).toBe(customPost.id);
+    expect(post.title).toBe(customPost.title);
+    expect(post.author.id).toBe(customPost.author?.id);
   });
 
   it('Update post', async () => {
+    const published = true;
+    const title = faker.word.noun();
     const res = await ctx.request.getGqlAuth(
       accessToken,
       `mutation {
-      updatepost(updatepostInput: {
-        name: "${customPost.name}"
+      updatePost(updatePostInput: {
+        id: ${customPost.id}
+        title: "${title}"
+        published: true
       }) {
         id
-        name
+        title
+        published
       }
     }`,
     );
-    const { updatepost } = gqlResponse(res);
+    console.dir(res.body, { depth: null });
+    const { updatePost } = gqlResponse(res);
 
-    expect(updatepost.id).toBe(postId);
-    expect(updatepost.name).toBe(customPost.name);
+    expect(updatePost.id).toBe(customPost.id);
+    expect(updatePost.title).toBe(title);
+    expect(updatePost.published).toBe(published);
+
+    customPost = {
+      ...customPost,
+      title,
+      published,
+    };
   });
 
   it('Remove post', async () => {
     const res = await ctx.request.getGqlAuth(
       accessToken,
       `mutation {
-      removepost {
+      removePost(id: ${customPost.id}) {
         id
-        name
       }
     }`,
     );
-    const { removepost } = gqlResponse(res);
+    const { removePost } = gqlResponse(res);
 
-    expect(removepost.id).toBe(postId);
-    expect(removepost.name).toBe(customPost.name);
+    expect(removePost.id).toBe(customPost.id);
   });
 };
 

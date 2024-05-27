@@ -1,14 +1,19 @@
-import { randomUUID } from 'crypto';
-import { mockedUser } from './user.mock';
+import { faker } from '@faker-js/faker';
+import { Post } from '@post/models/post.model';
+import { User } from '@user/models/user.model';
+import { defaultUser } from './user.mock';
 
-const mockedPost = {
+const getMockedPost = (author: User = defaultUser): Post => ({
   id: 1,
-  title: 'Mocked Post',
-  content: randomUUID(),
-  published: false,
-  authorId: mockedUser.id,
+  title: faker.word.noun(),
+  content: faker.string.alphanumeric({ length: { min: 20, max: 100 } }),
   dateCreated: new Date(),
+  published: false,
   dateModified: new Date(),
-};
+  authorId: author.id,
+  author,
+});
 
-export { mockedPost };
+const defaultPost = getMockedPost();
+
+export { defaultPost, getMockedPost };
