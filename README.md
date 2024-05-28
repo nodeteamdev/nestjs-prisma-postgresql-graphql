@@ -68,6 +68,10 @@ npm run db:push
 npm run start:dev
 ```
 
+# Apollo driver for GraphQL
+
+Project is using [Apollo driver](https://www.apollographql.com/) for managing GraphQL, so by default - there's avalaible `http://localhost:3000/graphql` request, which is accessible from browser, where you can use GraphQL with auto-generated schemas, docs and write queries and mutations with autocomplete feature.
+
 # Tests
 
 For unit tests there's Jest module, that will look for `*.spec.ts` files.
