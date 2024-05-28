@@ -4,13 +4,14 @@ import { PostService } from './post.service';
 import { PrismaClient } from '@prisma/client';
 import { mockDeep, DeepMockProxy, mockReset } from 'jest-mock-extended';
 import { PrismaService } from '@providers/prisma/prisma.service';
-import { mockedPost } from '@mocks/post.mock';
+import { getMockedPost } from '@mocks/post.mock';
 import { CreatePostInput } from './dto/create-post.input';
 import { defaultUser } from '@mocks/user.mock';
 import Order from '@dto/gql-order.enum';
 import { UpdatePostInput } from './dto/update-post.input';
 
 describe('PostResolver', () => {
+  const mockedPost = getMockedPost();
   let resolver: PostResolver;
   let prismaMock: DeepMockProxy<PrismaClient>;
 
