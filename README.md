@@ -36,7 +36,7 @@ docker volume create --name postgres_data0 -d local
 
 0. Setup env files.
 
-They should be lying in `config` folder, where you can find `.env` templates for them.
+They should be in `config` folder, where you can find `.env` templates for them.
 
 1. Install dependencies
 
